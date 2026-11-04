@@ -1,0 +1,15 @@
+node_modules
+dist
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+# Supabase CLI local state (linked project ref, cached versions)
+supabase/.temp
+supabase/.branches
+
+# Personal Claude Code settings
+.claude/settings.local.json
