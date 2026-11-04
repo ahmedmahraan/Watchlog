@@ -52,7 +52,7 @@ Email magic links work out of the box. Supabase's built-in mailer is rate-limite
 
 1. The repo is `ahmedmahraan/Watchlog`. The Pages path is case-sensitive; if the repo is renamed, change `REPO_NAME` in `vite.config.ts` and the URLs above.
 2. **Settings → Secrets and variables → Actions**: add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
-3. **Settings → Pages → Source**: GitHub Actions.
+3. **Settings → Pages → Source**: Deploy from a branch → `gh-pages` / `(root)`. The workflow creates that branch on its first run.
 
 Every push to `main` builds and deploys.
 
