@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { UserMenu } from './UserMenu'
 import { useAuth } from '../lib/auth'
@@ -12,6 +13,13 @@ const navClass = ({ isActive }: { isActive: boolean }) =>
 
 export function Layout() {
   const { user } = useAuth()
+  const { pathname } = useLocation()
+
+  // Start each page at the top (filters only change ?query, so they keep their scroll).
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="glass sticky top-0 z-20 rounded-none border-x-0 border-t-0">

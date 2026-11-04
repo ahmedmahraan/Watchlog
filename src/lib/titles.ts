@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import type { TitleRow, WatchStatus } from './database.types'
 import { getMovie, getShow, yearOf, type SearchResult } from './tmdb'
+import { todayISO } from './format'
 
 export const titlesKey = ['titles'] as const
 
@@ -22,9 +23,56 @@ export function useTitles() {
   })
 }
 
-const today = () => {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+const today = todayISO
+
+/** Fields the detail page can change. */
+export type TitlePatch = Partial<
+  Pick<TitleRow, 'status' | 'rating' | 'notes' | 'watched_on' | 'times_watched' | 'favorite'>
+>
+
+/**
+ * Save changes to one title. The cache is updated straight away (optimistic);
+ * if the save fails, only the fields in this patch are rolled back, so another
+ * change made in the meantime isn't lost.
+ */
+export function useUpdateTitle() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, patch }: { id: string; patch: TitlePatch }) => {
+      const { data, error } = await db().from('titles').update(patch).eq('id', id).select('id, updated_at').single()
+      if (error) throw error
+      return data
+    },
+    onMutate: async ({ id, patch }) => {
+      await qc.cancelQueries({ queryKey: titlesKey })
+      const row = qc.getQueryData<TitleRow[]>(titlesKey)?.find((t) => t.id === id)
+      const previous: TitlePatch = {}
+      if (row) for (const k of Object.keys(patch) as (keyof TitlePatch)[]) Object.assign(previous, { [k]: row[k] })
+      qc.setQueryData<TitleRow[]>(titlesKey, (old) => old?.map((t) => (t.id === id ? { ...t, ...patch } : t)))
+      return { previous }
+    },
+    onError: (_err, { id }, ctx) => {
+      if (!ctx) return
+      qc.setQueryData<TitleRow[]>(titlesKey, (old) => old?.map((t) => (t.id === id ? { ...t, ...ctx.previous } : t)))
+    },
+    onSuccess: ({ id, updated_at }) => {
+      qc.setQueryData<TitleRow[]>(titlesKey, (old) => old?.map((t) => (t.id === id ? { ...t, updated_at } : t)))
+    },
+  })
+}
+
+export function useDeleteTitle() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db().from('titles').delete().eq('id', id)
+      if (error) throw error
+      return id
+    },
+    onSuccess: (id) => {
+      qc.setQueryData<TitleRow[]>(titlesKey, (old) => old?.filter((t) => t.id !== id))
+    },
+  })
 }
 
 /** Look up full TMDB details for a search result and save it to the log. */
