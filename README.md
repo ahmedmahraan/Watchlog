@@ -24,7 +24,7 @@ npm run dev                  # http://localhost:5173/watchlog/
    ```bash
    npx supabase login
    npx supabase link --project-ref <project-ref>
-   npx supabase db push
+   npx supabase db push --remote   # CLI 3+: without --remote it targets a local database
    ```
    Or paste `supabase/migrations/*.sql` into the dashboard's SQL editor and run it.
 

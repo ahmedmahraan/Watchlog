@@ -4,7 +4,7 @@
 export type MediaType = 'movie' | 'tv'
 export type WatchStatus = 'watched' | 'watching' | 'want' | 'dropped'
 
-export interface TitleRow {
+export type TitleRow = {
   id: string
   user_id: string
   tmdb_id: number
@@ -24,7 +24,7 @@ export interface TitleRow {
   updated_at: string
 }
 
-export interface EpisodeWatchRow {
+export type EpisodeWatchRow = {
   id: string
   user_id: string
   title_id: string

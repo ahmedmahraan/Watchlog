@@ -39,22 +39,10 @@ export function Layout() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-12 pt-6">
         <Outlet />
       </main>
 
-      <footer className="glass rounded-none border-x-0 border-b-0 shadow-none">
-        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:text-slate-400">
-          <p>
-            This product uses the TMDB API but is not endorsed or certified by{' '}
-            <a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer" className="underline hover:text-slate-700 dark:hover:text-slate-200">
-              TMDB
-            </a>
-            .
-          </p>
-          <p>Watchlog</p>
-        </div>
-      </footer>
     </div>
   )
 }

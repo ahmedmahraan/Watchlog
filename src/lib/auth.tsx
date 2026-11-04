@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { authRedirectUrl, supabase } from './supabase'
+import { queryClient } from './queryClient'
 
 interface AuthState {
   session: Session | null
@@ -45,8 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false)
     })
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
-      if (active) setSession(next)
+    const { data: sub } = supabase.auth.onAuthStateChange((event, next) => {
+      if (!active) return
+      // Never show one account's cached data to the next account on this device.
+      if (event === 'SIGNED_OUT') queryClient.clear()
+      setSession(next)
     })
     return () => {
       active = false

@@ -3,6 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { Spinner } from '../components/Spinner'
+import { TmdbNotice } from '../components/TmdbCredit'
 
 type Phase =
   | { kind: 'idle' }
@@ -145,6 +146,7 @@ export default function LoginPage() {
           </>
         )}
       </div>
+      <TmdbNotice stacked className="mt-6 items-center px-4 opacity-80" />
     </div>
   )
 }
