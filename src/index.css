@@ -56,3 +56,17 @@
     box-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 8px 24px -12px rgb(0 0 0 / 0.6);
   }
 }
+
+/* Denser glass for menus and popovers floating over content, so text behind
+   them doesn't show through as coloured smudges. */
+@utility glass-popover {
+  background-color: rgb(255 255 255 / 0.88);
+  border: 1px solid rgb(255 255 255 / 0.8);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 16px 40px -12px rgb(15 23 42 / 0.3);
+  backdrop-filter: blur(24px) saturate(160%);
+  &:where(.dark, .dark *) {
+    background-color: rgb(15 23 42 / 0.88);
+    border-color: rgb(255 255 255 / 0.1);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 16px 40px -12px rgb(0 0 0 / 0.7);
+  }
+}

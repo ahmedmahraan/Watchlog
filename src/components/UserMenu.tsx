@@ -52,7 +52,7 @@ export function UserMenu() {
         {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" className="h-full w-full object-cover" /> : initial}
       </button>
       {open && (
-        <div role="menu" className="glass absolute right-0 mt-2 w-64 rounded-xl p-1.5 text-sm">
+        <div role="menu" className="glass-popover absolute right-0 mt-2 w-64 rounded-xl p-1.5 text-sm">
           <div className="px-3 py-2">
             <p className="text-xs text-slate-500 dark:text-slate-400">Signed in as</p>
             <p className="truncate font-medium">{user.email}</p>
@@ -66,7 +66,7 @@ export function UserMenu() {
           >
             {busy ? 'Signing out…' : 'Sign out'}
           </button>
-          <TmdbNotice className="mt-1.5 border-t border-slate-300/50 px-3 pb-1.5 pt-3 dark:border-white/10" />
+          <TmdbNotice full className="mt-1.5 border-t border-slate-300/50 px-3 pb-1.5 pt-3 dark:border-white/10" />
         </div>
       )}
     </div>
