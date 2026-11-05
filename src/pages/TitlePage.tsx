@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { EpisodeTracker } from '../components/EpisodeTracker'
 import { Poster } from '../components/Poster'
 import { Segmented } from '../components/Segmented'
 import { Spinner } from '../components/Spinner'
@@ -138,6 +139,18 @@ function TitleDetail({ title: t }: { title: TitleRow }) {
           </div>
         </Card>
       </div>
+
+      {t.media_type === 'tv' &&
+        (details.data && 'seasons' in details.data ? (
+          <EpisodeTracker title={t} show={details.data} />
+        ) : details.isError ? (
+          <p role="alert" className="glass mt-8 rounded-2xl p-5 text-sm text-red-700 dark:text-red-300">
+            Couldn't load seasons from TMDB: {(details.error as Error).message}{' '}
+            <button type="button" onClick={() => details.refetch()} className="font-medium underline">Try again</button>
+          </p>
+        ) : (
+          <div className="glass mt-8 h-32 animate-pulse rounded-2xl" aria-label="Loading episodes" />
+        ))}
 
       <div className="mt-4">
         <NotesEditor id={t.id} initial={t.notes ?? ''} />

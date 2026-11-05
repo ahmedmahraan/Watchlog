@@ -49,6 +49,14 @@ export interface TmdbSeasonSummary {
   poster_path: string | null
 }
 
+export interface TmdbEpisodeRef {
+  season_number: number
+  episode_number: number
+  air_date: string | null
+  runtime: number | null
+  name?: string
+}
+
 export interface TmdbShow {
   id: number
   name: string
@@ -56,7 +64,10 @@ export interface TmdbShow {
   poster_path: string | null
   genres: TmdbGenre[]
   episode_run_time: number[]
-  last_episode_to_air?: { runtime: number | null } | null
+  /** e.g. "Returning Series", "Ended", "Canceled" */
+  status?: string
+  last_episode_to_air?: TmdbEpisodeRef | null
+  next_episode_to_air?: TmdbEpisodeRef | null
   number_of_seasons: number
   number_of_episodes: number
   seasons: TmdbSeasonSummary[]
