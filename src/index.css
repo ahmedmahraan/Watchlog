@@ -47,8 +47,9 @@
   background-color: rgb(255 255 255 / 0.55);
   border: 1px solid rgb(255 255 255 / 0.7);
   box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 8px 24px -12px rgb(15 23 42 / 0.18);
+  /* Unprefixed only: the build adds -webkit- for Safari itself. Writing both made the
+     minifier keep just the -webkit- one, which Chrome ignores. */
   backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
   &:where(.dark, .dark *) {
     background-color: rgb(15 23 42 / 0.45);
     border-color: rgb(255 255 255 / 0.08);

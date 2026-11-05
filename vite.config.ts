@@ -10,7 +10,8 @@ const REPO_NAME = 'Watchlog'
 // Supabase and Google as an allowed redirect).
 const DEV_BASE = '/watchlog/'
 
-export default defineConfig(({ command }) => ({
-  base: command === 'build' ? `/${REPO_NAME}/` : DEV_BASE,
+export default defineConfig(({ command, isPreview }) => ({
+  // `vite preview` serves the production build, so it uses the production base too.
+  base: command === 'build' || isPreview ? `/${REPO_NAME}/` : DEV_BASE,
   plugins: [react(), tailwindcss()],
 }))
